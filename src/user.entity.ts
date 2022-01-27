@@ -8,3 +8,15 @@ export class User {
   @Column()
   name: string;
 }
+// int function( int a, int b) 
+// {
+//   int sum = a +b;
+//   return sum;
+// }
+
+
+// function add(a: number, b: number): number {
+//   return a + b;
+// }
+
+// add(12, );

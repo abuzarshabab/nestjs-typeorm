@@ -47,4 +47,10 @@ export class AppController {
   removeUser(@Param('id') id: number): Promise<User> {
     return this.appService.deleteUser(id);
   }
+
+  @Get('/firstEndpoint:id')
+  async firstAPI() {
+    const user = await this.appService.createUser('Tufail karim khan');
+    return user;
+  }
 }
