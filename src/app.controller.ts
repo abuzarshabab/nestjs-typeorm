@@ -4,24 +4,22 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { User } from './user.entity';
-
-interface UserBody {
-  name: string;
-}
-
-interface UserUpdateBody {
-  name: string;
-  id: number;
-}
+import { UserInput, UserUpdateBody } from './dto/crud.user.dto';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
+
+  @Post()
+  addUser(@Body() body: UserInput): Promise<User> {
+    console.log(body);
+    return this.appService.createUser(body);
+  }
 
   @Get('/:id')
   getUser(@Param('id') id: number): Promise<User> {
@@ -33,24 +31,24 @@ export class AppController {
     return this.appService.getAll();
   }
 
-  @Post()
-  addUser(@Body() body: UserBody): Promise<User> {
-    const name = body.name;
-    return this.appService.createUser(name);
+  @Put()
+  updateUser(@Body() user: UserUpdateBody): Promise<User> {
+    return this.appService.updateUser(user);
   }
-  @Patch()
-  updateUser(@Body() { name, id }: UserUpdateBody): Promise<User> {
-    return this.appService.updateUser(id, name);
+
+  @Get('/firstEndpoint')
+  async firstAPI() {
+    const user = await this.appService.createUser({
+      name: 'Abuzar',
+      email: 'abuzarshabab@gmail.com',
+      phone: 9973922757,
+      dob: '14/09/1999',
+    });
+    return user;
   }
 
   @Delete('/:id')
   removeUser(@Param('id') id: number): Promise<User> {
     return this.appService.deleteUser(id);
-  }
-
-  @Get('/firstEndpoint:id')
-  async firstAPI() {
-    const user = await this.appService.createUser('Tufail karim khan');
-    return user;
   }
 }
